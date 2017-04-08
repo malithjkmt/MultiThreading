@@ -1,46 +1,61 @@
 #include <iostream>
-#include <string>
-#include <time.h>
+#include <iostream>
+#include "Serial.h"
+#include "Mutex.h"
 #include "RandomSequence.h"
-#include "LinkedList.h"
 
 using namespace std;
 
+int getNumberOftrials() {
+	// TODO:
+	return 1;
+}
+
+void printCaseDetails(int caseNo, float percentageMems, float percentageIns, float percentageDels) {
+	cout << "Case " << caseNo << " : member = " << percentageMems * 100 << "% \t insert = " << percentageDels*100 << "% \t delete = " <<percentageDels*100 <<"%" << endl;
+}
+
 int main() {
-	//create Linked List
-	LinkedList linkedList;
-	linkedList.init_list();
+	int numberOfTrials = getNumberOftrials(); // TODO:
 
-	/* initialize random seed: */
-	srand(time(NULL));
+	int numberOfValues = 1000;
+	int numberOfOperations = 10000;
 
-	for (int i = 0; i < 1000; i++) {
-		linkedList.insert(rand());
-	}
-	linkedList.printList();
-	system("pause");
+	// case 1
+	float percentageMems = 0.99f;
+	float percentageIns = 0.005f;
+	float percentageDels = 0.005f;
+	printCaseDetails(1, percentageMems, percentageIns, percentageDels);
 
-	int numberOfOperations = 1000;
 	//get mapList
-	char *mapList = generateSequence(numberOfOperations, 0.50, 0.25, 0.25);
+	char *mapList = generateSequence(numberOfOperations, percentageMems, percentageIns, percentageDels);
+	
+	performSerial(numberOfValues,numberOfOperations, mapList);
+	performMutex(numberOfValues,numberOfOperations, mapList);
 
-	/* initialize random seed: */
-	srand(time(NULL));
-	for (int i = 0; i < numberOfOperations; i++) {
-		if (*(mapList + i) == 'm') {
-			cout << i << "th one: m\n";
-			linkedList.member(rand());
-		}
-		else if (*(mapList + i) == 'i') {
-			cout << i << "th one: i\n";
-			linkedList.insert(rand());
-		}
-		else {
-			cout << i << "th one: d\n";
-			linkedList.deleteNode(rand());
-		}
-	}
-	cout << "\nFinal Length is: " << linkedList.list_length() << endl;
+	// case 2
+	percentageMems = 0.90f;
+	percentageIns = 0.05f;
+	percentageDels = 0.05f;
+	printCaseDetails(2, percentageMems, percentageIns, percentageDels);
+
+	//get mapList
+	mapList = generateSequence(numberOfOperations, percentageMems, percentageIns, percentageDels);
+	
+	performSerial(numberOfValues, numberOfOperations, mapList);
+	performMutex(numberOfValues, numberOfOperations, mapList);
+
+	// case 3
+	percentageMems = 0.50f;
+	percentageIns = 0.25f;
+	percentageDels = 0.25f;
+	printCaseDetails(3, percentageMems, percentageIns, percentageDels);
+
+	//get mapList
+	mapList = generateSequence(numberOfOperations, percentageMems, percentageIns, percentageDels);
+	
+	performSerial(numberOfValues, numberOfOperations, mapList);
+	performMutex(numberOfValues, numberOfOperations, mapList);
 
 	//hold the program
 	system("pause");
