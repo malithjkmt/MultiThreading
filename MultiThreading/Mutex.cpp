@@ -8,20 +8,20 @@ LinkedList linkedList;
 
 bool locked_Member(int value) {
 	pthread_mutex_lock(&mutexLock);
-	bool result = linkedList.member(rand());
+	bool result = linkedList.member(value);
 	pthread_mutex_unlock(&mutexLock);
 	return (void*)result;
 }
 
 void locked_Insert(int value) {
 	pthread_mutex_lock(&mutexLock);
-	linkedList.insert(rand());
+	linkedList.insert(value);
 	pthread_mutex_unlock(&mutexLock);
 }
 
 Node* locked_Delete(int value) {
 	pthread_mutex_lock(&mutexLock);
-	Node* result = linkedList.deleteNode(rand());
+	Node* result = linkedList.deleteNode(value);
 	pthread_mutex_unlock(&mutexLock);
 	return result;
 }
