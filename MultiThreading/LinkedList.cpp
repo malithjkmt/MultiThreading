@@ -1,4 +1,5 @@
 #include "LinkedList.h"
+
 using namespace std;
 
 E Node::getValue() {
@@ -31,22 +32,32 @@ bool LinkedList::is_list_empty() {
 
 bool LinkedList::member(E value) {
 	Node *finder = head;
-	while (finder) {
-		if (finder->getValue() == value) {
-			return 1;
-		}
-		finder = (finder->getNext());
+	while (finder != NULL && finder->getValue() < value) {
+		finder = finder->getNext();
+	}
+
+	if (finder == NULL) {
+		return 0;
+	}
+
+	if (finder->getValue() == value) {
+		return 1;
 	}
 	return 0;
 }
 
 Node* LinkedList::search(E value) {
 	Node *finder = head;
-	while (finder) {
-		if (finder->getValue() == value) {
-			return finder;
-		}
-		finder = (finder->getNext());
+	while (finder != NULL && finder->getValue() < value) {
+		finder = finder->getNext();
+	}
+
+	if (finder == NULL) {
+		return 0;
+	}
+
+	if (finder->getValue() == value) {
+		return finder;
 	}
 	return NULL;
 }
@@ -69,15 +80,20 @@ Node* LinkedList::deleteNode(E value) {
 	}
 
 	//if head is not equal to the value
-	while (finder) {
-		if (finder->getValue() == value) {
-			previous->setNext(finder->getNext());
-			finder->setNext(NULL);
-			length--;
-			return finder;
-		}
+	while (finder != NULL && finder->getValue() < value) {
 		previous = finder;
 		finder = finder->getNext();
+	}
+
+	if (finder == NULL) {
+		return NULL;
+	}
+
+	if (finder->getValue() == value) {
+		previous->setNext(finder->getNext());
+		finder->setNext(NULL);
+		length--;
+		return finder;
 	}
 	return NULL;
 }
@@ -85,9 +101,73 @@ Node* LinkedList::deleteNode(E value) {
 void LinkedList::insert(E value) {
 	Node *newNode = new Node;
 	newNode->setValue(value);
-	newNode->setNext(head);
-	head = newNode;
-	length++;
+	if (head == NULL) {
+		head = newNode;
+		newNode->setNext(NULL);
+		length++;
+		return;
+	}
+	Node* finder = head->getNext();
+	Node* previous = head;
+
+	//if head is largerthan value
+	if (head->getValue() > value) {
+		newNode->setNext(head);
+		head = newNode;
+		length++;
+		return;
+	}
+
+	//if head is equal to value;
+	if (head->getValue() == value) {
+		newNode->setValue(value - 1);
+		newNode->setNext(head);
+		head = newNode;
+		length++;
+		return;
+	}
+
+	while (finder != NULL && finder->getValue() < value) {
+		previous = finder;
+		finder = finder->getNext();
+	}
+
+	if (finder == NULL) {
+		previous = newNode;
+		newNode->setNext(NULL);
+		length++;
+		return;
+	}
+
+	if (finder->getValue() != value) {
+		previous->setNext(newNode);
+		newNode->setNext(finder);
+		length++;
+		return;
+	}
+	else {
+		/*
+		if value already exist we insert
+		incremented value to suitable place
+		*/
+		insertNext(finder);
+		length++;
+	}
+}
+
+void LinkedList::insertNext(Node* finder) {
+	Node* previous = finder;
+	finder = finder->getNext();
+	int value = previous->getValue() + 1;
+	while (finder->getValue() == value) {
+		previous = finder;
+		finder = finder->getNext();
+		value++;
+	}
+	Node* newNode = new Node;
+	newNode->setValue(value);
+	newNode->setNext(finder);
+	previous->setNext(newNode);
 }
 
 int LinkedList::list_length() {
@@ -101,8 +181,8 @@ void LinkedList::printList() {
 	Node* finder = head;
 	int i = 1;
 	while (finder != NULL) {
-		//cout << "qwe ";
-		cout << "value no:" << i << "- " << finder->getValue() << "\n";
+		cout << "qwe";
+		cout << "value no:" << i << "- " << finder->getValue() << "\t";
 		finder = finder->getNext();
 		i++;
 	}

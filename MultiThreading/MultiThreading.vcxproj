@@ -120,9 +120,11 @@
     <ClCompile Include="Mutex.cpp" />
     <ClCompile Include="RandomSequence.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ReadWrite.cpp" />
     <ClCompile Include="Serial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ReadWrite.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Mutex.h" />
     <ClInclude Include="RandomSequence.h" />

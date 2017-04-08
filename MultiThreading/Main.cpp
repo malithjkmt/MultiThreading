@@ -3,6 +3,7 @@
 #include "Serial.h"
 #include "Mutex.h"
 #include "RandomSequence.h"
+#include "ReadWrite.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ int getNumberOftrials() {
 }
 
 void printCaseDetails(int caseNo, float percentageMems, float percentageIns, float percentageDels) {
-	cout << "Case " << caseNo << " : member = " << percentageMems * 100 << "% \t insert = " << percentageDels*100 << "% \t delete = " <<percentageDels*100 <<"%" << endl;
+	cout << endl << "Case " << caseNo << " : member = " << percentageMems * 100 << "% \t insert = " << percentageDels * 100 << "% \t delete = " << percentageDels * 100 << "%" << endl;
 }
 
 int main() {
@@ -32,6 +33,7 @@ int main() {
 	
 	performSerial(numberOfValues,numberOfOperations, mapList);
 	performMutex(numberOfValues,numberOfOperations, mapList);
+	performReadWrite(numberOfValues, numberOfOperations, mapList);
 
 	// case 2
 	percentageMems = 0.90f;
@@ -44,6 +46,7 @@ int main() {
 	
 	performSerial(numberOfValues, numberOfOperations, mapList);
 	performMutex(numberOfValues, numberOfOperations, mapList);
+	performReadWrite(numberOfValues, numberOfOperations, mapList);
 
 	// case 3
 	percentageMems = 0.50f;
@@ -56,6 +59,7 @@ int main() {
 	
 	performSerial(numberOfValues, numberOfOperations, mapList);
 	performMutex(numberOfValues, numberOfOperations, mapList);
+	performReadWrite(numberOfValues, numberOfOperations, mapList);
 
 	//hold the program
 	system("pause");

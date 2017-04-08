@@ -28,5 +28,6 @@ public:
 	void LinkedList::insert(E value);
 	int LinkedList::list_length();
 	void LinkedList::printList();
+	void LinkedList::insertNext(Node* finder);
 };
 

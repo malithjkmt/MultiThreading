@@ -1,4 +1,5 @@
 #include "Mutex.h"
+#include "LinkedList.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -19,15 +20,14 @@ void locked_Insert(int value) {
 	pthread_mutex_unlock(&mutexLock);
 }
 
-Node* locked_Delete(int value) {
+void locked_Delete(int value) {
 	pthread_mutex_lock(&mutexLock);
 	Node* result = linkedList.deleteNode(value);
 	pthread_mutex_unlock(&mutexLock);
-	return result;
 }
 
 
-void *kernelFunction(void* type) {
+void *kernelFunctionM(void* type) {
 	char operationType = (char)type;
 	int i = rand();
 	if (operationType == 'm') {
@@ -68,12 +68,14 @@ void performMutex(int numberOfValues, int numberOfOperations, char *mapList){
 	threadHandles = new pthread_t[numberOfOperations];
 
 	for (int thread = 0; thread < numberOfOperations; thread++) {
-		pthread_create((threadHandles + thread), NULL, kernelFunction, (void*)*(mapList + thread));
+		pthread_create((threadHandles + thread), NULL, kernelFunctionM, (void*)*(mapList + thread));
 	}
 
 	for (int thread = 0; thread < numberOfOperations; thread++) {
 		pthread_join(*(threadHandles + thread), NULL);
 	}
+
+	pthread_mutex_destroy(&mutexLock);
 
 	high_resolution_clock::time_point t2 = high_resolution_clock::now();
 	auto duration = duration_cast<microseconds>(t2 - t1).count();
