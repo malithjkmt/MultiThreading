@@ -34,8 +34,8 @@ float getSampleStandardDeviation(float data[], int length, float mean)
 }
 
 int getNummerOfSamplesToRun(float s, float x) {
-	float var = pow((100*1.96*s)/(5*x), 2);
-	return ceil(var);
+	double var = pow((100*1.96*s)/(5*x), 2);
+	return (int)(ceil(var));
 }
 
 void printCaseDetails(int caseNo, float percentageMems, float percentageIns, float percentageDels) {
@@ -204,6 +204,9 @@ int main() {
 	messureTimeReadWrite(numberOfValues, numberOfOperations, mapList, 8);
 
 	//hold the program
-	system("pause");
+	cout << endl;
+	int k;
+	cout << "Enter a int: ";
+	cin >> k;
 	return 0;
 }
